@@ -25,7 +25,7 @@
     cursor: pointer;
     display: flex;
     align-items: center;
-    font-weight: 500;
+    font-weight: bold;
     border: none;
   }
   .default {
@@ -40,14 +40,12 @@
     height: fit-content;
     font-size: 14px;
     line-height: 20px;
-    font-weight: 500;
   }
   .lg {
     text-align: center;
     justify-content: center;
     border-radius: 8px;
     font-size: 14px;
-    font-weight: 500;
     padding: 12px;
   }
   .grey {
@@ -57,6 +55,7 @@
   .blue {
     background-color: #1588C9;
     color: #ffffff;
+    font-weight: 500;
   }
   .light-blue {
     background-color: #E8F2FE;
