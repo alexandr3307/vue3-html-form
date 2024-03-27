@@ -65,7 +65,7 @@ export default {
   }
   .organization-form {
     margin: auto;
-    max-width: 770px;
+    max-width: 720px;
   }
   .organization-header {
     display: flex;
