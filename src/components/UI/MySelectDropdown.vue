@@ -1,54 +1,87 @@
 <template>
-  <div class="select-dropdown">
-    <div ref="toggle" class="toggle">
-      <input
-        class="search-dropdown"
-        type="text"
-        :placeholder=placeholder
-      />
-      <component :is="icon"></component>
+  <div class="dropdown" @click="toggleDropdown">
+    <div class="selected-option">
+      {{ selectedOption || placeholder }}
+      <DownIcon class="arrow-icon" :class="{ rotated: isDropdownOpen }" />
     </div>
+    <ul v-if="isDropdownOpen" class="dropdown-menu">
+      <li v-for="option in options" :key="option" @click="selectOption(option)">{{ option }}</li>
+    </ul>
   </div>
 </template>
 
-<script>
-import DownIcon from "@/assets/img/DownIcon.vue"
-export default {
-  name: "MySelectDropdown",
-  components: {
-    DownIcon
-  },
-  props: {
-    placeholder: {
-      default: '',
-      type: String
+<script lang="ts">
+  import { defineComponent } from 'vue';
+  import DownIcon from '@/assets/img/DownIcon.vue'
+  export default defineComponent({
+    components: {
+      DownIcon
     },
-    icon: {
-      default: '',
-      type: String
-    }
-  },
-};
+    props: {
+      placeholder: {
+        type: String,
+        required: true,
+      },
+      options: {
+        type: Array as () => string[],
+        required: true,
+      },
+      icon: {
+        type: String,
+        default: '⮟',
+      },
+    },
+    data() {
+      return {
+        isDropdownOpen: false,
+        selectedOption: '',
+      };
+    },
+    methods: {
+      toggleDropdown() {
+        this.isDropdownOpen = !this.isDropdownOpen;
+      },
+      selectOption(option: string) {
+        this.selectedOption = option;
+        this.isDropdownOpen = false;
+        this.toggleDropdown();
+        this.$emit('optionChanged', option);
+      },
+    },
+  });
 </script>
 
-<style lang="scss" scoped>
-  .toggle {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+<style>
+  .dropdown {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
     border: 1px solid #C8C8C8;
     border-radius: 8px;
     padding: 8px;
   }
-  input {
-    width: 100%;
-    width: -moz-available;
-    width: -webkit-fill-available;
-    width: fill-available;
-    border: none;
+  .arrow-icon {
+    position: absolute;
+    right: 0.5rem;
+    transition: transform 0.3s;
   }
-  input:focus {
+  .rotated {
+    transform: rotate(180deg);
+  }
+  .dropdown-menu {
+    list-style: none;
+    padding-left: 0;
+    border: 1px solid #ccc;
+    border-top: none;
+    width: fit-content;
+    position: absolute;
+    box-shadow: 0px 8px 16px 0px #00000014;
+    border-radius: 8px;
+    z-index: 1;
     background-color: #ffffff;
-    outline-width: 0;
+  }
+  .dropdown-menu li {
+    padding: 0.5rem;
+    cursor: pointer;
   }
 </style>

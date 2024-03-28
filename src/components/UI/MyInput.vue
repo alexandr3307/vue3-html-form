@@ -1,22 +1,35 @@
 <template>
-  <input type="text" class="input" :placeholder="placeholder" />
+  <input v-model="inputText" type="text" class="input" :placeholder="placeholder" @input="updateParent" />
 </template>
 
-<script>
-  export default {
-    name: "MyInput",
+<script lang="ts">
+  import { defineComponent, ref, PropType } from 'vue';
+
+  export default defineComponent({
+    name: 'MyInput',
     props: {
-      modelValue: [String, Number],
-      placeholder: {
-        default: '',
-        type: String
+      modelValue: {
+        type: [String, Number] as PropType<string | number>,
+        default: ''
       },
-      variant: {
-        default: 'default',
+      placeholder: {
         type: String,
+        default: ''
       }
     },
-  };
+    setup(props, { emit }) {
+      const inputText = ref(props.modelValue);
+
+      const updateParent = () => {
+        emit('update:modelValue', inputText.value);
+      };
+
+      return {
+        inputText,
+        updateParent
+      };
+    }
+  });
 </script>
 
 <style scoped lang="scss">

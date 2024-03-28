@@ -1,17 +1,35 @@
 <template>
-  <textarea class="textarea" :placeholder="placeholder" />
+  <textarea v-model="inputText" :placeholder="placeholder" @input="updateParent" class="textarea" />
 </template>
 
-<script>
-export default {
-    name: "MyTextarea",
+<script lang="ts">
+  import { defineComponent, ref, PropType } from 'vue';
+
+  export default defineComponent({
+    name: 'MyTextarea',
     props: {
-      placeholder: {
-        default: '',
-        type: String
+      modelValue: {
+        type: [String, Number] as PropType<string | number>,
+        default: ''
       },
+      placeholder: {
+        type: String,
+        default: ''
+      }
     },
-};
+    setup(props, { emit }) {
+      const inputText = ref(props.modelValue);
+
+      const updateParent = () => {
+        emit('update:modelValue', inputText.value);
+      };
+
+      return {
+        inputText,
+        updateParent
+      };
+    }
+  });
 </script>
 
 <style scoped lang="scss">
