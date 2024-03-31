@@ -82,6 +82,9 @@
     display: flex;
     flex-direction: column;
     gap: 2px;
+    &:last-child {
+      margin-top: 32px;
+    }
     &__title {
       margin: 0;
       align-items: center;
